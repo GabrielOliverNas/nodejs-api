@@ -1,0 +1,19 @@
+# Node.js dependencies
+node_modules/
+
+# Diretórios do VSCode
+.vscode/
+
+# Logs
+*.log
+
+# Arquivos do ambiente
+.env
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Diretórios de build (caso você use algum)
+dist/
+build/
