@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const port = 3000;
 const mongoose = require("mongoose");
 const uri = "mongodb://localhost:27017/db_usuario";
 const swaggerJsdoc = require('swagger-jsdoc'); // Certifique-se de que está importado
@@ -9,6 +10,15 @@ const userRoutes = require ('./routes/userRoutes.js')
 
 // Middleware para permitir requisições com JSON
 app.use(express.json());
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError) {
+    return res.status(400).json({
+      message: 'Ocorreu um erro ao tentar processar o JSON enviado.',
+      error: 'JSON malformado',
+    });
+  }
+  next(err);
+});
 
 // Conectar ao MongoDB
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -17,28 +27,23 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     console.error('Erro ao conectar ao MongoDB:', err);
   });
 
-
-const port = 3000;
-
 // Configuração do Swagger
 const swaggerOptions = {
   definition: {
-    openapi: '3.0.0', // ou a versão que você deseja usar
+    openapi: '3.0.0',
     info: {
       title: 'API de Usuários',
       version: '1.0.0',
       description: 'API para gerenciamento de usuários',
     },
   },
-  apis: ['./routes/userRoutes.js'],  // Caminho para o arquivo de rotas que contém as documentações
+  apis: ['./routes/userRoutes.js'],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
 // Usar o Swagger UI para exibir a documentação
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
-// Usar as rotas existentes
 app.use('/users', userRoutes);
 
 app.listen(port, () => {
