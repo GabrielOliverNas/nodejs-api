@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "swagger-autogen": "^2.23.7"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "lowdb": "^7.0.1",
+    "mongoose": "^8.12.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
